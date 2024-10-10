@@ -1,10 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.pizzeriajpa.persistencia;
+
+package com.mycompany.pizzeriajpa.persistencia.entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -29,6 +27,14 @@ public class Producto implements Serializable {
     @Column(name="precio", nullable=false)
     private Float precio;
     
+    @ManyToMany
+    @JoinTable(
+        name = "ingrediente_producto",
+        joinColumns = @JoinColumn(name = "producto_id"),
+        inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
+    )
+    private List<Ingrediente> ingredientes;
+    
     public Producto() {
         
     }
@@ -36,7 +42,6 @@ public class Producto implements Serializable {
     public Producto(Long id) {
         this.id = id;
     }
-    
     
     public Producto(String nombre, String descripcion, Float precio) {
         this.nombre = nombre;
@@ -75,7 +80,7 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pizzeriajpa.persistencia.Producto[ id=" + id + " ]";
+        return "Producto[ id=" + id + ", nombre=" + nombre + ", precio=" + precio + " ]";
     }
 
     /**
@@ -118,6 +123,20 @@ public class Producto implements Serializable {
      */
     public void setPrecio(Float precio) {
         this.precio = precio;
+    }
+
+    /**
+     * @return the ingredientes
+     */
+    public List<Ingrediente> getIngredientes() {
+        return ingredientes;
+    }
+
+    /**
+     * @param ingredientes the ingredientes to set
+     */
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
     }
     
 }

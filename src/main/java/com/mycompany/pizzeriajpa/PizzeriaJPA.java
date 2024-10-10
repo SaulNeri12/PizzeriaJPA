@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package com.mycompany.pizzeriajpa;
 
-import com.mycompany.pizzeriajpa.persistencia.Producto;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import com.mycompany.pizzeriajpa.dao.ProductosDAO;
+import com.mycompany.pizzeriajpa.dao.excepciones.DAOException;
+import com.mycompany.pizzeriajpa.persistencia.entidades.Producto;
+import java.util.List;
 
 /**
  *
@@ -17,20 +14,31 @@ public class PizzeriaJPA {
 
     public static void main(String[] args) {
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_pizzeria");
-        EntityManager em = emf.createEntityManager();
+        // MUESTRA TODOS LOS PRODUCTOS EN EL SISTEMA
+        try {
+            List<Producto> productos = ProductosDAO.getInstance().obtenerProductosConPrecioMaximo(250);
+             
+            for (Producto p: productos) {
+                System.out.println(p);
+            }
+        } catch (DAOException e) {
+            System.out.println(e.getMessage());
+        }
         
-        em.getTransaction().begin();
+        Producto p = new Producto("Pizza con Champinones", "Pizza sencilla con base de tomate, queso y cubierta de champinones", 95.0f);
         /*
-
-        Producto p = new Producto("Pizza Peperoni", "Pizza sencilla con base de tomate, queso y cubierta de peperonis", 99.9f);
-        em.persist(p);
-*/
-        // NOTE: SE TIENE QUE BUSCAR PRIMERO LA ENTIDAD
-        em.remove(new Producto(1l));
-        em.getTransaction().commit();
-        em.close();
+        
+        // NOTE: AGREGA una pizza
+        try {
+            ProductosDAO.getInstance().agregarProducto(p);
+            System.out.println("Se agrego la pizza al sistema...");
+        } catch (DAOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        */
         
         System.out.println("Pizza guardada");
     }
+    
+    
 }

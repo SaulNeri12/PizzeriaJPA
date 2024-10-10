@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
-package com.mycompany.pizzeriajpa.persistencia;
+package com.mycompany.pizzeriajpa.persistencia.entidades;
 
+import com.mycompany.pizzeriajpa.persistencia.entidades.Ingrediente;
 import java.io.Serializable;
-
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -14,22 +11,26 @@ import javax.persistence.*;
  * @author Saul Neri
  */
 @Entity
-@Table(name="ingrediente")
-public class Ingrediente implements Serializable {
+@Table(name="tipo_ingrediente")
+public class TipoIngrediente implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre", unique = true, nullable = false, length = 100)
     private String nombre;
-
-    @ManyToOne
-    @JoinColumn(name = "tipo_id", nullable = false)
-    private TipoIngrediente tipoIngrediente;
     
-    public Ingrediente() {
-        
+    @OneToMany(cascade= CascadeType.PERSIST, mappedBy="tipoIngrediente")
+    private List<Ingrediente> ingredientes;
+
+    public TipoIngrediente() {
+    
+    }
+    
+    public TipoIngrediente(String nombre) {
+        this.nombre = nombre;
     }
     
     public Long getId() {
@@ -50,10 +51,10 @@ public class Ingrediente implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ingrediente)) {
+        if (!(object instanceof TipoIngrediente)) {
             return false;
         }
-        Ingrediente other = (Ingrediente) object;
+        TipoIngrediente other = (TipoIngrediente) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -62,7 +63,7 @@ public class Ingrediente implements Serializable {
 
     @Override
     public String toString() {
-        return "Ingrediente[ id=" + id + ", nombre=" + getNombre() + " ]";
+        return "TipoIngrediente[ id=" + id + ", nombre=" + nombre + " ]";
     }
 
     /**
@@ -80,17 +81,17 @@ public class Ingrediente implements Serializable {
     }
 
     /**
-     * @return the tipoIngrediente
+     * @return the ingredientes
      */
-    public TipoIngrediente getTipoIngrediente() {
-        return tipoIngrediente;
+    public List<Ingrediente> getIngredientes() {
+        return ingredientes;
     }
 
     /**
-     * @param tipoIngrediente the tipoIngrediente to set
+     * @param ingredientes the ingredientes to set
      */
-    public void setTipoIngrediente(TipoIngrediente tipoIngrediente) {
-        this.tipoIngrediente = tipoIngrediente;
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
     }
 
 }

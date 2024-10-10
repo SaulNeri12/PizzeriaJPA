@@ -15,12 +15,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Saul Neri
  */
 @Entity
+@Table(name="empleado")
 public class Empleado implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,15 +37,15 @@ public class Empleado implements Serializable {
     };
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "puesto", nullable = false)
-    private Puesto puesto;
+    private String puesto;
 
     @Column(name = "fecha_contratacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp fechaContratacion;
@@ -55,7 +57,11 @@ public class Empleado implements Serializable {
     private String telefono;
     
     public Empleado() {
-        
+        this.fechaContratacion = new Timestamp(System.currentTimeMillis());
+    }
+    
+    public Empleado(Long id) {
+        this.id=id;
     }
     
     public Long getId() {
@@ -109,14 +115,14 @@ public class Empleado implements Serializable {
      * @return the puesto
      */
     public Puesto getPuesto() {
-        return puesto;
+        return Puesto.valueOf(puesto.toUpperCase());
     }
 
     /**
      * @param puesto the puesto to set
      */
     public void setPuesto(Puesto puesto) {
-        this.puesto = puesto;
+        this.puesto = puesto.name().toLowerCase();
     }
 
     /**

@@ -29,4 +29,19 @@ public interface IVentasDAO {
      * @throws DAOException 
      */
     public void agregarVenta(Venta venta) throws DAOException;
+    
+    /**
+     * 
+     * @param venta
+     * @throws DAOException 
+     */
+    public void actualizarVenta(Venta venta) throws DAOException;
+    
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws DAOException 
+     */
+    public Venta obtenerVenta(Long id) throws DAOException;
 }

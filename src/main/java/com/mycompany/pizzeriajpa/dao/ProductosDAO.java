@@ -51,6 +51,8 @@ public class ProductosDAO implements IProductosDAO {
             throw new DAOException("La informacion del producto esta imcompleta, porfavor ingrese los datos faltantes...");
         }
         
+        this.em = Conexion.getInstance().crearConexion();
+        
         em.getTransaction().begin();
         em.persist(producto);
         em.getTransaction().commit();
@@ -59,10 +61,18 @@ public class ProductosDAO implements IProductosDAO {
 
     @Override
     public Producto obtenerProducto(Long id) throws DAOException {
-        TypedQuery<Producto>  consulta = em.createQuery("SELECT p FROM Producto p WHERE p.id = :id", Producto.class);
-        consulta.setParameter("id", id);
-        return consulta.getSingleResult();
+        //TypedQuery<Producto>  consulta = em.createQuery("SELECT p FROM Producto p WHERE p.id = :id", Producto.class);
+        //consulta.setParameter("id", id);
+        //return consulta.getSingleResult();
+        Producto producto = em.find(Producto.class, id);
+        return producto;
     }
-    
-    
+
+    @Override
+    public List<Producto> obtenerProductosConPrecioMayorA(float precio) throws DAOException {
+        TypedQuery<Producto>  consulta = em.createQuery("SELECT p FROM Producto p WHERE p.precio >= :precioMaximo", Producto.class);
+        consulta.setParameter("precioMaximo", precio);
+        List<Producto> productos = consulta.getResultList();
+        return productos;
+    }
 }

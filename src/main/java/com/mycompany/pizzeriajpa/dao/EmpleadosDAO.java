@@ -11,7 +11,6 @@ import com.mycompany.pizzeriajpa.dao.interfaces.IEmpleadosDAO;
 import com.mycompany.pizzeriajpa.persistencia.entidades.Empleado;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -42,6 +41,8 @@ public class EmpleadosDAO implements IEmpleadosDAO {
             throw new DAOException("La informacion del empleado esta imcompleta, porfavor ingrese los datos faltantes...");
         }
         
+        this.em = Conexion.getInstance().crearConexion();
+        
         em.getTransaction().begin();
         em.persist(empleado);
         em.getTransaction().commit();
@@ -50,7 +51,9 @@ public class EmpleadosDAO implements IEmpleadosDAO {
 
     @Override
     public Empleado obtenerEmpleado(Long id) throws DAOException {
-        TypedQuery<Empleado>  consulta = em.createQuery("SELECT e FROM Empleado e", Empleado.class);
-        return consulta.getSingleResult();
+        //TypedQuery<Empleado>  consulta = em.createQuery("SELECT e FROM Empleado e", Empleado.class);
+        this.em = Conexion.getInstance().crearConexion();
+        Empleado empleado = em.find(Empleado.class, id);
+        return empleado;
     }
 }

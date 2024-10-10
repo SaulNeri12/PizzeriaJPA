@@ -5,6 +5,8 @@ package com.mycompany.pizzeriajpa.persistencia.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -24,7 +27,7 @@ public class Venta implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "nombre_cliente", nullable = false, length = 100)
@@ -37,15 +40,23 @@ public class Venta implements Serializable {
     private Timestamp fechaHora;
 
     @Column(name = "monto_total", nullable = false, precision = 10, scale = 2)
-    private BigDecimal montoTotal;
+    private Float montoTotal;
 
     @ManyToOne
     @JoinColumn(name = "empleado_id", nullable = false)
     private Empleado empleado;
     
+    @OneToMany(mappedBy = "venta", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<ProductoVenta> productosVenta;
+    
     public Venta() {
-        
+        this.fechaHora = new Timestamp(System.currentTimeMillis());
     }
+    
+    public Venta(Long id) {
+        this.id = id;
+    }
+           
     
     public Long getId() {
         return id;
@@ -125,14 +136,14 @@ public class Venta implements Serializable {
     /**
      * @return the montoTotal
      */
-    public BigDecimal getMontoTotal() {
+    public Float getMontoTotal() {
         return montoTotal;
     }
 
     /**
      * @param montoTotal the montoTotal to set
      */
-    public void setMontoTotal(BigDecimal montoTotal) {
+    public void setMontoTotal(Float montoTotal) {
         this.montoTotal = montoTotal;
     }
 
@@ -148,6 +159,20 @@ public class Venta implements Serializable {
      */
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+    }
+
+    /**
+     * @return the productosVenta
+     */
+    public List<ProductoVenta> getProductosVenta() {
+        return productosVenta;
+    }
+
+    /**
+     * @param productosVenta the productosVenta to set
+     */
+    public void setProductosVenta(List<ProductoVenta> productosVenta) {
+        this.productosVenta = productosVenta;
     }
 
 }

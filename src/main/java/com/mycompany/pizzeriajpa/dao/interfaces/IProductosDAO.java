@@ -23,6 +23,14 @@ public interface IProductosDAO {
     
     /**
      * 
+     * @param precio
+     * @return 
+     * @throws com.mycompany.pizzeriajpa.dao.excepciones.DAOException 
+     */
+    public List<Producto> obtenerProductosConPrecioMayorA(float precio) throws DAOException;
+    
+    /**
+     * 
      * @param producto
      * @throws DAOException 
      */

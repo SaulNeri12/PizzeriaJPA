@@ -41,6 +41,7 @@ public class IngredientesDAO implements IIngredientesDAO {
  
     @Override
     public List<Ingrediente> obtenerIngredientesConCaracter(char caracter) throws DAOException {
+        this.em = Conexion.getInstance().crearConexion();
         String jpql = "SELECT i FROM Ingrediente i WHERE i.nombre LIKE :inicio AND i.nombre LIKE :fin";
         TypedQuery<Ingrediente> query = em.createQuery(jpql, Ingrediente.class);
         
@@ -56,6 +57,8 @@ public class IngredientesDAO implements IIngredientesDAO {
             throw new DAOException("La informacion del ingrediente esta imcompleta, porfavor ingrese los datos faltantes...");
         }
         
+        this.em = Conexion.getInstance().crearConexion();
+        
         em.getTransaction().begin();
         em.persist(ingrediente);
         em.getTransaction().commit();
@@ -64,15 +67,15 @@ public class IngredientesDAO implements IIngredientesDAO {
 
     @Override
     public List<Ingrediente> obtenerIngredientesTodos() throws DAOException {
+        this.em = Conexion.getInstance().crearConexion();
         TypedQuery<Ingrediente> consulta = em.createQuery("SELECT i FROM Ingrediente i", Ingrediente.class);
-
         return consulta.getResultList();
     }
 
     @Override
     public List<TipoIngrediente> obtenerTiposIngrediente() throws DAOException {
+        this.em = Conexion.getInstance().crearConexion();
         TypedQuery<TipoIngrediente> consulta = em.createQuery("SELECT t FROM TipoIngrediente t", TipoIngrediente.class);
-        
         return consulta.getResultList();
     }
 
@@ -81,6 +84,8 @@ public class IngredientesDAO implements IIngredientesDAO {
         if (tipo == null) {
             throw new DAOException("La informacion del tipo de ingrediente esta imcompleta, porfavor ingrese los datos faltantes...");
         }
+        
+        this.em = Conexion.getInstance().crearConexion();
         
         em.getTransaction().begin();
         em.persist(tipo);

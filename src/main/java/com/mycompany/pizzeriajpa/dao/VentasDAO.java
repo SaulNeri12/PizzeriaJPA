@@ -61,21 +61,9 @@ public class VentasDAO implements IVentasDAO {
             throw new DAOException("La informacion de la venta esta incompleta, falta el nombre del cliente, porfavor ingrese los datos faltantes...");
         }
         
-        /*
-        if (venta.getProductosVenta() == null || venta.getProductosVenta().isEmpty()) {
-            throw new DAOException("La informacion de la venta esta incompleta, no se especificaron los productos para realizar la venta...");
-        }*/
-        
         if (venta.getTelCliente() == null || venta.getTelCliente().isBlank() || venta.getTelCliente().isEmpty()) {
             throw new DAOException("La informacion de la venta esta incompleta, falta el numero de telefono del cliente, porfavor ingrese los datos faltantes...");
         }
-        
-        //float totalVenta = 0.0f;
-        
-        /*
-        for (ProductoVenta p: venta.getProductosVenta()) {
-            totalVenta += p.getPrecioProducto() * p.getCantidad();
-        }*/
         
         venta.setMontoTotal(0.f);
         
@@ -123,7 +111,6 @@ public class VentasDAO implements IVentasDAO {
             throw new DAOException("La información de la venta está incompleta, falta el número de teléfono del cliente, por favor ingrese los datos faltantes...");
         }
 
-        // Calcular el monto total de la venta
         float totalVenta = 0.0f;
         if (venta.getProductosVenta() != null) {
             for (ProductoVenta p : venta.getProductosVenta()) {
@@ -131,22 +118,19 @@ public class VentasDAO implements IVentasDAO {
             }
         }
 
-        venta.setMontoTotal(totalVenta); // Establecer el monto total de la venta
+        venta.setMontoTotal(totalVenta);
 
         this.em = Conexion.getInstance().crearConexion();
         
         try {
-            // Iniciar transacción
             em.getTransaction().begin();
 
-            // Actualizar la venta existente
             em.merge(venta);
 
-            // Actualizar los productos de venta
             if (venta.getProductosVenta() != null) {
                 for (ProductoVenta productoVenta : venta.getProductosVenta()) {
-                    productoVenta.setVenta(venta); // Asegurar que cada ProductoVenta tenga la referencia a la Venta
-                    em.merge(productoVenta); // Usar merge para actualizar ProductoVenta
+                    productoVenta.setVenta(venta);
+                    em.merge(productoVenta);
                 }
             }
 
@@ -154,13 +138,13 @@ public class VentasDAO implements IVentasDAO {
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback(); // En caso de error, revertir la transacción
+                em.getTransaction().rollback();
             }
             System.out.println(e);
             throw new DAOException("Error al actualizar la venta: " + e.getMessage());
         } finally {
             if (em.isOpen()) {
-                em.close(); // Cerrar el EntityManager solo cuando todas las operaciones hayan terminado
+                em.close();
             }
         }
     }

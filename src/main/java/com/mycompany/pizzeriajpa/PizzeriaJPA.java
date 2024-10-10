@@ -25,21 +25,18 @@ public class PizzeriaJPA {
 
     public static void main(String[] args) {
         
-        // MUESTRA TODOS LOS PRODUCTOS EN EL SISTEMA
-        /*
+        // NOTE: EN EL PAQUETE TEST VIENEN PRUEBAS UNITARIAS DE LOS DAOs
                
         List<Producto> productos = null;
         
         try {
             productos = ProductosDAO.getInstance().obtenerProductosConPrecioMaximo(250);
              
-            for (Producto p: productos) {
-                System.out.println(p);
-            }
+            System.out.println(productos.getFirst().getIngredientes().getFirst()); // albahaca
         } catch (DAOException e) {
             System.out.println(e.getMessage());
         }
-        
+        /*
         try {
             productos = ProductosDAO.getInstance().obtenerProductosConPrecioMaximo(250);
              
@@ -156,8 +153,56 @@ public class PizzeriaJPA {
             IngredientesDAO.getInstance().agregarTipoIngrediente(tipo);
         } catch (DAOException ex) {
             Logger.getLogger(PizzeriaJPA.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
+*/
+        
+        Empleado empleado = new Empleado();
+        empleado.setNombre("Saul Neri");
+        empleado.setFechaNac(Date.valueOf("2004-04-06"));
+        empleado.setPuesto(Empleado.Puesto.ENCARGADO);
+        empleado.setTelefono("6444333333");
+        
+        try {
+            EmpleadosDAO.getInstance().agregarEmpleado(empleado);
+            System.out.println("Se agrego un empleado al sistema");
+        } catch (DAOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        empleado.setNombre("Shesh Ramirez");
+        empleado.setFechaNac(Date.valueOf("2004-04-06"));
+        empleado.setPuesto(Empleado.Puesto.LIMPIEZA);
+        empleado.setTelefono("6444333344");
+        
+        try {
+            EmpleadosDAO.getInstance().agregarEmpleado(empleado);
+            System.out.println("Se agrego un empleado al sistema");
+        } catch (DAOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        empleado.setNombre("Ana Torres");
+        empleado.setFechaNac(Date.valueOf("2004-04-06"));
+        empleado.setPuesto(Empleado.Puesto.LIMPIEZA);
+        empleado.setTelefono("6444335544");
+        
+        try {
+            EmpleadosDAO.getInstance().agregarEmpleado(empleado);
+            System.out.println("Se agrego un empleado al sistema");
+        } catch (DAOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        empleado.setNombre("Loco Ramirez");
+        empleado.setFechaNac(Date.valueOf("2004-04-06"));
+        empleado.setPuesto(Empleado.Puesto.LIMPIEZA);
+        empleado.setTelefono("6444555555");
+        
+        try {
+            EmpleadosDAO.getInstance().agregarEmpleado(empleado);
+            System.out.println("Se agrego un empleado al sistema");
+        } catch (DAOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    
-    
 }
